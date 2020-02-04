@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" content="width=device-width, initial-scale=1" name="viewport"/>
+    <title>Diary</title>
+</head>
+
+
+<body style="background: beige">
+{% if msg %}
+    <div align="left" style="width:85%; margin: auto;padding-top: 20px">
+        <p>{{ msg|safe }}</p>
+    </div>
+{% endif %}
+
+{% if verify_form %}
+    <div align="center" style="padding-top: 3px"><a href="http://www.loopy.tech">
+        <img src="http://file.loopy.tech/logo.png" width="30%"></a>
+    </div>
+{% endif %}
+
+{% if verify_form %}
+    <form align="center" class="form" method="POST" style="padding-top: 3px">
+        {{ verify_form.hidden_tag() }}
+        <table align="center" border="0" style="width:70%; margin: auto;">
+            <tr>
+                <td align="center">{{ verify_form.password() }}</td>
+            </tr>
+            <tr>
+                <td>{{ verify_form.submit() }}</td>
+            </tr>
+        </table>
+    </form>
+{% endif %}
+{% if diary_form %}
+    <form align="center" class="form" method="POST" style="padding-top: 3px">
+        {{ diary_form.hidden_tag() }}
+        <table align="center" border="0" style="width:85%; margin: auto;">
+            <tr>
+                <td align="left">{{ diary_form.content() }}</td>
+            </tr>
+            <tr>
+                <th colspan="2">{{ diary_form.submit() }}</th>
+            </tr>
+        </table>
+    </form>
+{% endif %}
+
+</body>
+
+</html>
