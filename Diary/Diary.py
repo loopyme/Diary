@@ -7,7 +7,7 @@ from loopyCryptor import RSA_encrypt, RSA_decrypt
 class Diary:
     def __init__(self, content: str = None, key_path: str = None):
         self.__raw_content = content
-        self.__date = str(datetime.date.today()) if content is not None else None
+        self.__date = diary_date() if content is not None else None
 
         key = ["diary_key.pri", "diary_key.pub"]
         for i in range(2):
@@ -70,3 +70,14 @@ class Diary:
             if d[-6:] != ".diary":
                 continue
             Diary(key_path=key_path).read_diary(os.path.join(src_path, d)).to_txt()
+
+
+def diary_date(ret_weekday=False):
+    now = datetime.datetime.now()
+    if now.hour < 4:
+        now = now - datetime.date.resolution
+
+    if ret_weekday:
+        return now.strftime("%Y-%m-%d"), "一二三四五六日"[now.isoweekday()]
+    else:
+        return now.strftime("%Y-%m-%d")

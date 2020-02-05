@@ -1,4 +1,3 @@
-import datetime
 import os
 import random
 import string
@@ -6,7 +5,7 @@ import string
 from flask import Flask, render_template, redirect, session
 from loopyCryptor import md5
 
-from .Diary import Diary
+from .Diary import Diary, diary_date
 from .forms import VerifyForm, DiaryForm
 
 app = Flask(__name__)
@@ -27,13 +26,14 @@ def is_robot():
 
 
 def check(token=None):
-    if "token_md5" in session:
-        return md5(session["token_md5"]) == TOKEN_2MD5
-    else:
-        if token is None:
-            return False
+    if token is not None:
         session["token_md5"] = md5(token)
         return check()
+    else:
+        if "token_md5" not in session:
+            return False
+        else:
+            return md5(session["token_md5"]) == TOKEN_2MD5
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -78,11 +78,9 @@ def write():
             except Exception as e:
                 return render_template("diary.html", msg=e, diary_form=form)
     else:
-        date = datetime.date.today()
+        date, weekday = diary_date(ret_weekday=True)
         if os.path.isfile("./Diary/{}.Diary".format(date)):
             msg = "! Diary already exist"
         else:
-            msg = "{}{}周{}".format(
-                date.isoformat(), "&nbsp;" * 3, "一二三四五六日"[date.isoweekday()]
-            )
+            msg = "{}{}周{}".format(date, "&nbsp;" * 3, weekday)
         return render_template("diary.html", msg=msg, diary_form=form)
