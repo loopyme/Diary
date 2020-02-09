@@ -78,6 +78,6 @@ def diary_date(ret_weekday=False):
         now = now - datetime.date.resolution
 
     if ret_weekday:
-        return now.strftime("%Y-%m-%d"), "一二三四五六日"[now.isoweekday()]
+        return now.strftime("%Y-%m-%d"), "零一二三四五六日"[now.isoweekday()]
     else:
         return now.strftime("%Y-%m-%d")

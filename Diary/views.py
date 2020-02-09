@@ -79,7 +79,7 @@ def write():
                 return render_template("diary.html", msg=e, diary_form=form)
     else:
         date, weekday = diary_date(ret_weekday=True)
-        if os.path.isfile("./Diary/{}.Diary".format(date)):
+        if os.path.isfile("./diary/{}.diary".format(date)):
             msg = "! Diary already exist"
         else:
             msg = "{}{}周{}".format(date, "&nbsp;" * 3, weekday)
